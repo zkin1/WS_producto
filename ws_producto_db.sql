@@ -34,7 +34,7 @@ CREATE TABLE `categorias` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `categorias` (
 
 LOCK TABLES `categorias` WRITE;
 /*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
-INSERT INTO `categorias` VALUES (1,'Herramientas','Herramientas manuales y eléctricas','herramientas.jpg','herramientas',1,1,'2025-05-05 18:15:29','2025-05-05 18:15:29');
+INSERT INTO `categorias` VALUES (1,'Herramientas','Herramientas manuales y eléctricas','herramientas.jpg','herramientas',1,1,'2025-05-05 18:15:29','2025-05-05 18:15:29'),(4,'Herramientas Manuales','Herramientas que no requieren electricidad','herramientas-manuales.jpg','herramientas-manuales',1,1,'2025-05-06 19:53:38','2025-05-06 19:53:38'),(5,'Herramientas Eléctricas','Herramientas con alimentación eléctrica','herramientas-electricas.jpg','herramientas-electricas',2,1,'2025-05-06 19:53:38','2025-05-06 19:53:38'),(6,'Materiales de Construcción','Materiales básicos para construcción','materiales.jpg','materiales-construccion',3,1,'2025-05-06 19:53:38','2025-05-06 19:53:38'),(7,'Ferretería General','Artículos diversos de ferretería','ferreteria.jpg','ferreteria-general',4,1,'2025-05-06 19:53:38','2025-05-06 19:53:38');
 /*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,7 +64,7 @@ CREATE TABLE `especificaciones_producto` (
   PRIMARY KEY (`id`),
   KEY `producto_id` (`producto_id`),
   CONSTRAINT `especificaciones_producto_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +93,7 @@ CREATE TABLE `imagenes_producto` (
   PRIMARY KEY (`id`),
   KEY `producto_id` (`producto_id`),
   CONSTRAINT `imagenes_producto_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,6 +102,7 @@ CREATE TABLE `imagenes_producto` (
 
 LOCK TABLES `imagenes_producto` WRITE;
 /*!40000 ALTER TABLE `imagenes_producto` DISABLE KEYS */;
+INSERT INTO `imagenes_producto` VALUES (1,1,'martillo-carpintero-1.jpg',1,1,'2025-05-06 19:54:18'),(2,1,'martillo-carpintero-2.jpg',2,0,'2025-05-06 19:54:18'),(6,1,'martillo-carpintero-1.jpg',1,1,'2025-05-06 20:04:18'),(7,1,'martillo-carpintero-2.jpg',2,0,'2025-05-06 20:04:18');
 /*!40000 ALTER TABLE `imagenes_producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +122,7 @@ CREATE TABLE `marcas` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,6 +131,7 @@ CREATE TABLE `marcas` (
 
 LOCK TABLES `marcas` WRITE;
 /*!40000 ALTER TABLE `marcas` DISABLE KEYS */;
+INSERT INTO `marcas` VALUES (1,'DeWalt','dewalt-logo.png','Marca líder en herramientas profesionales',1,'2025-05-06 19:53:55','2025-05-06 19:53:55'),(2,'Bosch','bosch-logo.png','Herramientas de alta calidad y precisión',1,'2025-05-06 19:53:55','2025-05-06 19:53:55'),(3,'Stanley','stanley-logo.png','Marca con tradición en herramientas manuales',1,'2025-05-06 19:53:55','2025-05-06 19:53:55'),(4,'Black & Decker','black-decker-logo.png','Herramientas para el hogar y bricolaje',1,'2025-05-06 19:53:55','2025-05-06 19:53:55'),(5,'Makita','makita-logo.png','Especialistas en herramientas eléctricas',1,'2025-05-06 19:53:55','2025-05-06 19:53:55');
 /*!40000 ALTER TABLE `marcas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -164,7 +166,7 @@ CREATE TABLE `productos` (
   CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`marca_id`) REFERENCES `marcas` (`id`) ON DELETE SET NULL,
   CONSTRAINT `productos_ibfk_2` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `productos_ibfk_3` FOREIGN KEY (`subcategoria_id`) REFERENCES `subcategorias` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -173,6 +175,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
+INSERT INTO `productos` VALUES (1,'HM001','Martillo de Carpintero 16oz','Martillo de carpintero con mango ergonómico y cabeza de acero forjado',15.99,NULL,3,4,1,1,0,1,'2025-05-06 19:54:03','2025-05-06 20:04:28'),(2,'HM002','Juego de Destornilladores 6 piezas','Set de destornilladores Phillips y planos con mango antideslizante',12.50,NULL,3,1,2,0,0,1,'2025-05-06 19:54:03','2025-05-06 19:54:03'),(3,'HM003','Alicate Universal 8\"','Alicate de uso general con mango aislado',8.75,NULL,3,1,3,0,0,1,'2025-05-06 19:54:03','2025-05-06 19:54:03'),(4,'HM004','Juego de Llaves Combinadas 8-19mm','Set de llaves combinadas en medidas métricas',29.99,NULL,3,1,4,1,0,1,'2025-05-06 19:54:03','2025-05-06 19:54:03'),(17,'HM101','Martillo de Carpintero 16oz','Martillo de carpintero con mango ergonómico y cabeza de acero forjado',15.99,NULL,3,4,1,1,0,1,'2025-05-06 20:02:56','2025-05-06 20:02:56'),(18,'HM102','Juego de Destornilladores 6 piezas','Set de destornilladores Phillips y planos con mango antideslizante',12.50,NULL,3,4,2,0,0,1,'2025-05-06 20:02:56','2025-05-06 20:02:56'),(19,'HM103','Alicate Universal 8\"','Alicate de uso general con mango aislado',8.75,NULL,3,4,3,0,0,1,'2025-05-06 20:02:56','2025-05-06 20:02:56'),(20,'HM104','Juego de Llaves Combinadas 8-19mm','Set de llaves combinadas en medidas métricas',29.99,NULL,3,4,4,1,0,1,'2025-05-06 20:02:56','2025-05-06 20:02:56'),(21,'HE001','Taladro Percutor 750W','Taladro percutor con potencia de 750W y portabrocas de 13mm',89.99,79.99,1,5,17,1,1,1,'2025-05-06 20:04:13','2025-05-06 20:04:13'),(22,'HE002','Sierra Circular 1200W','Sierra circular con disco de 7-1/4\" y guía láser',129.50,NULL,2,5,18,1,0,1,'2025-05-06 20:04:13','2025-05-06 20:04:13'),(23,'HE003','Lijadora Orbital 300W','Lijadora orbital con sistema de recolección de polvo',45.75,39.99,4,5,19,0,1,1,'2025-05-06 20:04:13','2025-05-06 20:04:13'),(24,'HE004','Soldadora Inverter 200A','Soldadora por arco con tecnología inverter',199.99,NULL,5,5,20,1,0,1,'2025-05-06 20:04:13','2025-05-06 20:04:13');
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,7 +201,7 @@ CREATE TABLE `subcategorias` (
   UNIQUE KEY `slug` (`slug`),
   KEY `idx_subcategorias_categoria` (`categoria_id`),
   CONSTRAINT `subcategorias_ibfk_1` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,6 +210,7 @@ CREATE TABLE `subcategorias` (
 
 LOCK TABLES `subcategorias` WRITE;
 /*!40000 ALTER TABLE `subcategorias` DISABLE KEYS */;
+INSERT INTO `subcategorias` VALUES (1,1,'Martillos','Todo tipo de martillos',NULL,'martillos',1,1,'2025-05-06 19:53:45','2025-05-06 19:53:45'),(2,1,'Destornilladores','Destornilladores de diferentes tipos',NULL,'destornilladores',2,1,'2025-05-06 19:53:45','2025-05-06 19:53:45'),(3,1,'Alicates','Alicates y pinzas',NULL,'alicates',3,1,'2025-05-06 19:53:45','2025-05-06 19:53:45'),(4,1,'Llaves','Llaves de diferentes tipos y tamaños',NULL,'llaves',4,1,'2025-05-06 19:53:45','2025-05-06 19:53:45'),(17,5,'Taladros','Taladros eléctricos y percutores',NULL,'taladros',1,1,'2025-05-06 19:56:59','2025-05-06 19:56:59'),(18,5,'Sierras','Sierras eléctricas',NULL,'sierras',2,1,'2025-05-06 19:56:59','2025-05-06 19:56:59'),(19,5,'Lijadoras','Lijadoras eléctricas',NULL,'lijadoras',3,1,'2025-05-06 19:56:59','2025-05-06 19:56:59'),(20,5,'Soldadoras','Equipos de soldadura',NULL,'soldadoras',4,1,'2025-05-06 19:56:59','2025-05-06 19:56:59');
 /*!40000 ALTER TABLE `subcategorias` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -219,4 +223,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-05 14:38:07
+-- Dump completed on 2025-05-06 16:34:49
