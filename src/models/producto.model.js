@@ -145,8 +145,8 @@ class Producto {
     const [result] = await pool.query(
       `INSERT INTO productos (
         codigo, nombre, descripcion, precio, precio_oferta, 
-        marca_id, categoria_id, subcategoria_id, destacado, nuevo
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        marca_id, categoria_id, subcategoria_id, destacado, nuevo, stock
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         producto.codigo,
         producto.nombre,
@@ -157,7 +157,8 @@ class Producto {
         producto.categoria_id,
         producto.subcategoria_id,
         producto.destacado || false,
-        producto.nuevo || false
+        producto.nuevo || false,
+        producto.stock || 0
       ]
     );
     return result.insertId;
@@ -168,7 +169,7 @@ class Producto {
       `UPDATE productos SET 
         codigo = ?, nombre = ?, descripcion = ?, precio = ?, precio_oferta = ?,
         marca_id = ?, categoria_id = ?, subcategoria_id = ?, 
-        destacado = ?, nuevo = ?, activo = ?
+        destacado = ?, nuevo = ?, activo = ?, stock = ?
       WHERE id = ?`,
       [
         producto.codigo,
@@ -182,6 +183,7 @@ class Producto {
         producto.destacado !== undefined ? producto.destacado : false,
         producto.nuevo !== undefined ? producto.nuevo : false,
         producto.activo !== undefined ? producto.activo : true,
+        producto.stock !== undefined ? producto.stock : 0,
         id
       ]
     );
@@ -191,6 +193,39 @@ class Producto {
   static async delete(id) {
     const [result] = await pool.query('DELETE FROM productos WHERE id = ?', [id]);
     return result.affectedRows;
+  }
+  
+  // Nuevos métodos para gestión de stock
+  static async updateStock(id, cantidad) {
+    const [result] = await pool.query(
+      `UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?`,
+      [cantidad, id, cantidad]
+    );
+    return result.affectedRows;
+  }
+
+  static async restoreStock(id, cantidad) {
+    const [result] = await pool.query(
+      `UPDATE productos SET stock = stock + ? WHERE id = ?`,
+      [cantidad, id]
+    );
+    return result.affectedRows;
+  }
+  
+  static async checkStockAvailability(id, cantidad) {
+    const [rows] = await pool.query(
+      'SELECT stock FROM productos WHERE id = ?', 
+      [id]
+    );
+    
+    if (rows.length === 0) {
+      return { disponible: false, stock: 0 };
+    }
+    
+    return { 
+      disponible: rows[0].stock >= cantidad, 
+      stock: rows[0].stock 
+    };
   }
 }
 
