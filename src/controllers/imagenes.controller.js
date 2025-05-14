@@ -3,7 +3,14 @@ const Imagen = require('../models/imagen.model');
 exports.getImagenesByProducto = async (req, res) => {
   try {
     const imagenes = await Imagen.getByProducto(req.params.productoId);
-    res.status(200).json(imagenes);
+    
+    // Añadir la URL pública a cada imagen
+    const imagenesConUrl = imagenes.map(img => ({
+      ...img,
+      url_publica: Imagen.getPublicUrl(img.url)
+    }));
+    
+    res.status(200).json(imagenesConUrl);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error al obtener imágenes del producto' });
@@ -33,6 +40,9 @@ exports.getImagenById = async (req, res) => {
     if (!imagen) {
       return res.status(404).json({ message: 'Imagen no encontrada' });
     }
+    // Añadir la URL pública
+    imagen.url_publica = Imagen.getPublicUrl(imagen.url);
+    
     res.status(200).json(imagen);
   } catch (error) {
     console.error(error);

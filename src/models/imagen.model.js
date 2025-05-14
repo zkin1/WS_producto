@@ -14,6 +14,16 @@ class Imagen {
     return rows[0];
   }
 
+static getPublicUrl(url) {
+  if (!url) return null;
+  
+  // Obtener sólo el nombre del archivo, ignorando las rutas
+  const filename = url.split('/').pop().split('\\').pop();
+  
+  // Retornar solo el nombre del archivo o una ruta relativa
+  return `/imagenes/${filename}`;
+}
+
   // Método nuevo para buscar por nombre de producto
 static async searchByProductName(query) {
   const [rows] = await pool.query(
