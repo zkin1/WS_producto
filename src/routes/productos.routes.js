@@ -11,9 +11,4 @@ router.post('/', productosController.createProducto);
 router.put('/:id', productosController.updateProducto);
 router.delete('/:id', productosController.deleteProducto);
 
-// Nuevas rutas para gestión de stock
-router.post('/check-stock', productosController.checkStock);
-router.post('/update-stock', productosController.updateStock);
-router.post('/restore-stock', productosController.restoreStock);
-
 module.exports = router;
