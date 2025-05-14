@@ -13,18 +13,7 @@ class Imagen {
     const [rows] = await pool.query('SELECT * FROM imagenes_producto WHERE id = ?', [id]);
     return rows[0];
   }
-
-  // Método nuevo para buscar por nombre de producto
-static async searchByProductName(query) {
-  const [rows] = await pool.query(
-    `SELECT ip.* FROM imagenes_producto ip
-     JOIN productos p ON ip.producto_id = p.id
-     WHERE p.nombre LIKE ?
-     ORDER BY p.nombre, ip.es_principal DESC, ip.orden ASC`,
-    [`%${query}%`]
-  );
-  return rows;
-}
+  
   static async create(imagen) {
     // Si es_principal=true, actualizar otras imágenes a es_principal=false
     if (imagen.es_principal) {

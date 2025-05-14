@@ -1,19 +1,14 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path'); // Añadido para manejo de rutas de archivos
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT;
 
 // Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Servir archivos estáticos para imágenes
-// Crea una carpeta 'uploads/imagenes' en la raíz de tu API
-app.use('/imagenes', express.static(path.join(__dirname, 'uploads/imagenes')));
 
 // Rutas básicas
 app.get('/', (req, res) => {
@@ -23,53 +18,44 @@ app.get('/', (req, res) => {
   });
 });
 
-// Ruta de prueba para verificar que el proxy funciona
-app.get('/test', (req, res) => {
-  res.json({ message: 'La ruta /test de la API de productos funciona correctamente' });
-});
-
 // Importar rutas
 const categoriasRoutes = require('./routes/categorias.routes');
 const subcategoriasRoutes = require('./routes/subcategorias.routes');
 const marcasRoutes = require('./routes/marcas.routes');
 const productosRoutes = require('./routes/productos.routes');
-const imagenesRoutes = require('./routes/imagenes.routes');
-const especificacionesRoutes = require('./routes/especificaciones.routes');
-
-// Importar controlador de imágenes para la búsqueda por nombre
-const imagenesController = require('./controllers/imagenes.controller');
+const imagenesRoutes = require('./controllers/imagenes.controller');
+const especificacionesRoutes = require('./controllers/especificaciones.controller');
 
 // Rutas de la API
-app.use('/categorias', categoriasRoutes);
-app.use('/subcategorias', subcategoriasRoutes);
-app.use('/marcas', marcasRoutes);
-app.use('/productos', productosRoutes);
-
-// Nueva ruta para buscar imágenes por nombre de producto
-app.get('/imagenes/search', imagenesController.searchImagenesByProductName);
+app.use('/api/categorias', categoriasRoutes);
+app.use('/api/subcategorias', subcategoriasRoutes);
+app.use('/api/marcas', marcasRoutes);
+app.use('/api/productos', productosRoutes);
 
 // Rutas anidadas para imágenes y especificaciones
-app.use('/productos/:productoId/imagenes', (req, res, next) => {
+app.use('/api/productos/:productoId/imagenes', (req, res, next) => {
+  // Middleware para pasar el productoId a los controladores
   req.productoId = req.params.productoId;
   next();
-}, imagenesRoutes);
+}, require('./routes/imagenes.routes'));
 
-app.use('/productos/:productoId/especificaciones', (req, res, next) => {
+app.use('/api/productos/:productoId/especificaciones', (req, res, next) => {
+  // Middleware para pasar el productoId a los controladores
   req.productoId = req.params.productoId;
   next();
-}, especificacionesRoutes);
+}, require('./routes/especificaciones.routes'));
 
 // Rutas adicionales para las relaciones entre entidades
-app.get('/categorias/:categoriaId/subcategorias', 
+app.get('/api/categorias/:categoriaId/subcategorias', 
   require('./controllers/subcategorias.controller').getSubcategoriasByCategoria);
 
-app.get('/categorias/:categoriaId/productos', 
+app.get('/api/categorias/:categoriaId/productos', 
   require('./controllers/productos.controller').getProductosByCategoria);
 
-app.get('/subcategorias/:subcategoriaId/productos', 
+app.get('/api/subcategorias/:subcategoriaId/productos', 
   require('./controllers/productos.controller').getProductosBySubcategoria);
 
-app.get('/marcas/:marcaId/productos', 
+app.get('/api/marcas/:marcaId/productos', 
   require('./controllers/productos.controller').getProductosByMarca);
 
 // Middleware para manejo de errores 404
@@ -79,5 +65,5 @@ app.use((req, res) => {
 
 // Iniciar servidor
 app.listen(port, () => {
-  console.log(`Servidor de API de productos corriendo en http://localhost:${port}`);
+  console.log(`Servidor corriendo en http://localhost:${port}`);
 });

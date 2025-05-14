@@ -10,23 +10,6 @@ exports.getImagenesByProducto = async (req, res) => {
   }
 };
 
-// Añade este método al archivo existente
-exports.searchImagenesByProductName = async (req, res) => {
-  try {
-    const { q } = req.query;
-    
-    if (!q || q.trim().length < 2) {
-      return res.status(400).json({ message: 'La búsqueda debe contener al menos 2 caracteres' });
-    }
-    
-    const imagenes = await Imagen.searchByProductName(q);
-    res.status(200).json(imagenes);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error al buscar imágenes por nombre de producto' });
-  }
-};
-
 exports.getImagenById = async (req, res) => {
   try {
     const imagen = await Imagen.getById(req.params.id);
@@ -60,7 +43,6 @@ exports.createImagen = async (req, res) => {
     res.status(500).json({ message: 'Error al crear la imagen' });
   }
 };
-
 
 exports.updateImagen = async (req, res) => {
   try {
