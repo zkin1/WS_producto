@@ -7,12 +7,13 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 // Middlewares
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Servir archivos estáticos para imágenes
+// Crea una carpeta 'uploads/imagenes' en la raíz de tu API
+app.use('/imagenes', express.static(path.join(__dirname, 'uploads/imagenes')));
 
 // Rutas básicas
 app.get('/', (req, res) => {
